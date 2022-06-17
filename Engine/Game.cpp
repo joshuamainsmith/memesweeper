@@ -20,6 +20,7 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
+#include "Keyboard.h"
 
 Game::Game( MainWindow& wnd )
 	:
@@ -42,5 +43,9 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
+	if (wnd.mouse.LeftIsPressed())
+	{
+		brd.ProcessClick(Board::Cell::Empty);
+	}
 	brd.Draw(gfx);
 }
