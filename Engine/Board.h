@@ -2,7 +2,7 @@
 
 #include "Graphics.h"
 #include "Vei2.h"
-#include "Keyboard.h"
+#include "Mouse.h"
 
 
 class Board
@@ -29,11 +29,13 @@ public:
 public:
 	Board();
 	void Draw(Graphics& gfx);
-	void ProcessClick(Cell cell);
+	void ProcessClick(Cell cell, Graphics& gfx, std::pair<int, int>& ms);
+	void InitCells();
 
 private:
+	static constexpr int CenterHeight = (Graphics::ScreenHeight / 2) - ((float)Dimension::Height / 2);
+	static constexpr int CenterWidth = (Graphics::ScreenWidth / 2) - ((float)Dimension::Width / 2);
 	Vei2 StartPos;
-	static constexpr float CenterWidth = (Graphics::ScreenWidth / 2) - ((float)Dimension::Width / 2);
-	static constexpr float CenterHeight = (Graphics::ScreenHeight / 2) - ((float)Dimension::Height / 2);
+	Cell CellState[CenterWidth][CenterHeight] = {Cell::Default};
 };
 
