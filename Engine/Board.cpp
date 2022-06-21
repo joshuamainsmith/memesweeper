@@ -17,11 +17,13 @@ void Board::Draw(Graphics& gfx)
 	for (int y = StartPos.y; y < Dimension::Height + StartPos.y; y += TileDimension)
 		for (int x = StartPos.x; x < Dimension::Width + StartPos.x; x += TileDimension)
 		{
-			switch (CellState[x / TileDimension][y / TileDimension])
+			int in_x = (x - StartPos.x) / TileDimension;
+			int in_y = (y - StartPos.y) / TileDimension;
+			switch (CellState[in_x][in_y])
 			{
 			case Cell::Default:
 				SpriteCodex::DrawTileButton(Vei2(x, y), gfx);
-				if (HasFlag[x / TileDimension][y / TileDimension])
+				if (HasFlag[in_x][in_y])
 					SpriteCodex::DrawTileFlag(Vei2(x, y), gfx);
 				break;
 			case Cell::Bomb:
@@ -30,12 +32,12 @@ void Board::Draw(Graphics& gfx)
 				else
 				{
 					SpriteCodex::DrawTileButton(Vei2(x, y), gfx);
-					if (HasFlag[x / TileDimension][y / TileDimension])
+					if (HasFlag[in_x][in_y])
 						SpriteCodex::DrawTileFlag(Vei2(x, y), gfx);
 				}
 				break;
 			case Cell::Empty:
-				int count = CheckNeighborTiles(Vei2(x / TileDimension, y / TileDimension));
+				int count = CheckNeighborTiles(Vei2(in_x, in_y));
 				if (count == 0)
 					SpriteCodex::DrawTile0(Vei2(x, y), gfx);
 				else if (count == 1)
@@ -69,21 +71,23 @@ void Board::DrawGameOver(Graphics& gfx)
 
 void Board::ProcessClick(bool flag, Graphics& gfx, std::pair<int, int>& ms)
 {
-	switch (CellState[(ms.first / TileDimension)][(ms.second / TileDimension) - 1])
+	int x = (ms.first - StartPos.x) / TileDimension;
+	int y = (ms.second - StartPos.y) / TileDimension;
+	switch (CellState[x][y])
 	{
 	case Cell::Bomb:
 		if (!flag)
 			GameOver = true;
 		else
-			HasFlag[(ms.first / TileDimension)][(ms.second / TileDimension) - 1] = true;
+			HasFlag[x][y] = true;
 		break;
 	case Cell::Default:
 		if (flag)
 		{
-			HasFlag[(ms.first / TileDimension)][(ms.second / TileDimension) - 1] = true;
+			HasFlag[x][y] = true;
 			break;
 		}
-		CellState[(ms.first / TileDimension)][(ms.second / TileDimension) - 1] = Cell::Empty;
+		CellState[x][y] = Cell::Empty;
 		break;
 	}
 	
@@ -92,7 +96,7 @@ void Board::ProcessClick(bool flag, Graphics& gfx, std::pair<int, int>& ms)
 int Board::CheckNeighborTiles(Vei2& pos)
 {
 	int Count = 0;
-	if (pos.x > 0 && pos.y > 0 && pos.x < Dimension::Width && pos.y < Dimension::Height)
+	if (pos.x > 0 && pos.y > 0 && pos.x < width && pos.y < height)
 	{
 		if (CellState[pos.x - 1][pos.y - 1] == Cell::Bomb)
 			Count++;
@@ -117,13 +121,12 @@ int Board::CheckNeighborTiles(Vei2& pos)
 
 void Board::InitCells()
 {
-	for (int y = 0; y < Dimension::Height; y++)
-		for (int x = 0; x < Dimension::Width; x++)
+	for (int y = 0; y < height; y++)
+		for (int x = 0; x < width; x++)
 		{
 			if (x % 2 == 0 && y % 2 == 0)
 				CellState[x][y] = Cell::Bomb;
 		}
-
 }
 
 bool Board::isGameOver()

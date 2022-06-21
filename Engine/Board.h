@@ -39,7 +39,7 @@ private:
 	static constexpr int CenterWidth = (Graphics::ScreenWidth / 2) - ((float)Dimension::Width / 2);
 	static constexpr int TileDimension = 16;
 	Vei2 StartPos;
-	Cell CellState[Width][Height] = {Cell::Default};
+	Cell CellState[width][height] = {Cell::Default};
 	bool GameOver = false;
 	bool HasFlag[CenterWidth][CenterHeight] = { false };
 };
