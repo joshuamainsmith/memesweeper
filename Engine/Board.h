@@ -30,7 +30,7 @@ public:
 	void Draw(Graphics& gfx);
 	void DrawGameOver(Graphics& gfx);
 	void ProcessClick(bool flag, Graphics& gfx, std::pair<int, int>& ms);
-	void CheckNeighborTiles(Vei2& pos);
+	int CheckNeighborTiles(Vei2& pos);
 	void InitCells();
 	bool isGameOver();
 
@@ -39,7 +39,7 @@ private:
 	static constexpr int CenterWidth = (Graphics::ScreenWidth / 2) - ((float)Dimension::Width / 2);
 	static constexpr int TileDimension = 16;
 	Vei2 StartPos;
-	Cell CellState[CenterWidth][CenterHeight] = {Cell::Default};
+	Cell CellState[Width][Height] = {Cell::Default};
 	bool GameOver = false;
 	bool HasFlag[CenterWidth][CenterHeight] = { false };
 };
