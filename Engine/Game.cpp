@@ -44,8 +44,8 @@ void Game::UpdateModel()
 void Game::ComposeFrame()
 {
 	if (wnd.mouse.LeftIsPressed())
-	{
-		brd.ProcessClick(Board::Cell::Empty, gfx, wnd.mouse.GetPos());
-	}
+		brd.ProcessClick(false, gfx, wnd.mouse.GetPos());
+	else if (wnd.mouse.RightIsPressed())
+		brd.ProcessClick(true, gfx, wnd.mouse.GetPos());
 	brd.Draw(gfx);
 }

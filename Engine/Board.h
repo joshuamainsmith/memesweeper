@@ -16,7 +16,6 @@ public:
 	{
 		Default,
 		Empty,
-		Flag,
 		Bomb
 	};
 
@@ -29,13 +28,19 @@ public:
 public:
 	Board();
 	void Draw(Graphics& gfx);
-	void ProcessClick(Cell cell, Graphics& gfx, std::pair<int, int>& ms);
+	void DrawGameOver(Graphics& gfx);
+	void ProcessClick(bool flag, Graphics& gfx, std::pair<int, int>& ms);
+	void CheckNeighborTiles(Vei2& pos);
 	void InitCells();
+	bool isGameOver();
 
 private:
 	static constexpr int CenterHeight = (Graphics::ScreenHeight / 2) - ((float)Dimension::Height / 2);
 	static constexpr int CenterWidth = (Graphics::ScreenWidth / 2) - ((float)Dimension::Width / 2);
+	static constexpr int TileDimension = 16;
 	Vei2 StartPos;
 	Cell CellState[CenterWidth][CenterHeight] = {Cell::Default};
+	bool GameOver = false;
+	bool HasFlag[CenterWidth][CenterHeight] = { false };
 };
 
