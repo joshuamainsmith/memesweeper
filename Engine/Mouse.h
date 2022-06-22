@@ -99,7 +99,9 @@ public:
 	int GetPosX() const;
 	int GetPosY() const;
 	bool LeftIsPressed() const;
+	bool LeftIsReleased();
 	bool RightIsPressed() const;
+	bool RightIsReleased();
 	bool IsInWindow() const;
 	Mouse::Event Read();
 	bool IsEmpty() const
@@ -123,7 +125,9 @@ private:
 	int x;
 	int y;
 	bool leftIsPressed = false;
+	bool leftIsReleased = false;
 	bool rightIsPressed = false;
+	bool rightIsReleased = false;
 	bool isInWindow = false;
 	std::queue<Event> buffer;
 };
