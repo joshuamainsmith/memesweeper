@@ -82,7 +82,7 @@ void Board::ProcessClick(bool flag, Graphics& gfx, std::pair<int, int>& ms)
 	switch (CellState[x][y])
 	{
 	case Cell::Bomb:
-		if (!flag)
+		if (!flag && !HasFlag[x][y])
 			GameOver = true;
 		else
 			HasFlag[x][y] = true;
@@ -91,12 +91,11 @@ void Board::ProcessClick(bool flag, Graphics& gfx, std::pair<int, int>& ms)
 		if (flag)
 		{
 			HasFlag[x][y] = true;
-			break;
 		}
-		CellState[x][y] = Cell::Empty;
+		else if (!HasFlag[x][y])
+			CellState[x][y] = Cell::Empty;
 		break;
-	}
-	
+	}	
 }
 
 int Board::CheckNeighborTiles(Vei2& pos)
@@ -247,7 +246,7 @@ void Board::InitCells()
 
 	int x = xDist(rng);
 	int y = yDist(rng);
-	for (int c = 0; c < 50; c++)
+	for (int c = 0; c < 10; c++)
 	{
 		while (CellState[x][y] == Cell::Bomb)
 		{
