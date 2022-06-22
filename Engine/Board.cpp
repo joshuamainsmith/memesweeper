@@ -1,5 +1,6 @@
 #include "Board.h"
 #include "SpriteCodex.h"
+#include <random>
 
 Board::Board()
 	:
@@ -165,9 +166,9 @@ int Board::CheckNeighborTiles(Vei2& pos)
 			{
 				if (CellState[pos.x - 1][pos.y] == Cell::Bomb)
 					Count++;
-				if (CellState[pos.x - 1][pos.y - 1] == Cell::Bomb)
+				if (CellState[pos.x - 1][pos.y + 1] == Cell::Bomb)
 					Count++;
-				if (CellState[pos.x][pos.y - 1] == Cell::Bomb)
+				if (CellState[pos.x][pos.y + 1] == Cell::Bomb)
 					Count++;
 			}
 
@@ -191,9 +192,9 @@ int Board::CheckNeighborTiles(Vei2& pos)
 					Count++;
 				if (CellState[pos.x - 1][pos.y] == Cell::Bomb)
 					Count++;
-				if (CellState[pos.x - 1][pos.y - 1] == Cell::Bomb)
+				if (CellState[pos.x - 1][pos.y + 1] == Cell::Bomb)
 					Count++;
-				if (CellState[pos.x][pos.y - 1] == Cell::Bomb)
+				if (CellState[pos.x][pos.y + 1] == Cell::Bomb)
 					Count++;
 			}
 		}
@@ -234,13 +235,23 @@ int Board::CheckNeighborTiles(Vei2& pos)
 
 void Board::InitCells()
 {
-	for (int y = 0; y < height - 1; y++)
-		for (int x = 0; x < width - 1; x++)
+	std::random_device rd;
+	std::mt19937 rng(rd());
+	std::uniform_int_distribution<int> xDist(0, width - 1);
+	std::uniform_int_distribution<int> yDist(0, height - 1);	
+
+	int x = xDist(rng);
+	int y = yDist(rng);
+	for (int c = 0; c < 50; c++)
+	{
+		while (CellState[x][y] == Cell::Bomb)
 		{
-			if (x % 2 == 0 && y % 2 == 0)
-				CellState[x][y] = Cell::Bomb;
+			x = xDist(rng);
+			y = yDist(rng);
 		}
-	//CellState[width-1][height-1] = Cell::Bomb;
+
+		CellState[x][y] = Cell::Bomb;
+	}
 }
 
 bool Board::isGameOver()
