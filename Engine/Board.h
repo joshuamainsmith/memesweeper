@@ -27,6 +27,7 @@ public:
 
 public:
 	Board();
+	Vei2 GetStartPos();
 	void Draw(Graphics& gfx);
 	void DrawGameOver(Graphics& gfx);
 	void ProcessClick(bool flag, Graphics& gfx, std::pair<int, int>& ms);

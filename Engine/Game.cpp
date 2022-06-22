@@ -44,8 +44,18 @@ void Game::UpdateModel()
 void Game::ComposeFrame()
 {
 	if (wnd.mouse.LeftIsPressed())
-		brd.ProcessClick(false, gfx, wnd.mouse.GetPos());
+	{
+		if (wnd.mouse.GetPosY() > brd.GetStartPos().y && wnd.mouse.GetPosX() > brd.GetStartPos().x
+			&& wnd.mouse.GetPosY() < Board::Dimension::Height + brd.GetStartPos().y 
+			&& wnd.mouse.GetPosX() < Board::Dimension::Width + brd.GetStartPos().x)
+			brd.ProcessClick(false, gfx, wnd.mouse.GetPos());
+	}
 	else if (wnd.mouse.RightIsPressed())
-		brd.ProcessClick(true, gfx, wnd.mouse.GetPos());
+	{
+		if (wnd.mouse.GetPosY() > brd.GetStartPos().y && wnd.mouse.GetPosX() > brd.GetStartPos().x
+			&& wnd.mouse.GetPosY() < Board::Dimension::Height + brd.GetStartPos().y
+			&& wnd.mouse.GetPosX() < Board::Dimension::Width + brd.GetStartPos().x)
+			brd.ProcessClick(true, gfx, wnd.mouse.GetPos());
+	}
 	brd.Draw(gfx);
 }

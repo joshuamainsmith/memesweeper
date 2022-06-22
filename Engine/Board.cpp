@@ -9,6 +9,11 @@ StartPos(CenterWidth, CenterHeight)
 	InitCells();
 }
 
+Vei2 Board::GetStartPos()
+{
+	return StartPos;
+}
+
 void Board::Draw(Graphics& gfx)
 {
 	for (int y = StartPos.y; y < Dimension::Height + StartPos.y; y++)
