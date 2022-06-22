@@ -96,7 +96,7 @@ void Board::ProcessClick(bool flag, Graphics& gfx, std::pair<int, int>& ms)
 int Board::CheckNeighborTiles(Vei2& pos)
 {
 	int Count = 0;
-	if (pos.x > 0 && pos.y > 0 && pos.x < width && pos.y < height)
+	if (pos.x > 0 && pos.y > 0 && pos.x < width - 1 && pos.y < height - 1)
 	{
 		if (CellState[pos.x - 1][pos.y - 1] == Cell::Bomb)
 			Count++;
@@ -115,18 +115,132 @@ int Board::CheckNeighborTiles(Vei2& pos)
 		if (CellState[pos.x - 1][pos.y] == Cell::Bomb)
 			Count++;
 	}
+	else
+	{
+
+		if (pos.x == 0)
+		{
+			// top left corner
+			if (pos.y == 0)
+			{
+				if (CellState[pos.x + 1][pos.y] == Cell::Bomb)
+					Count++;
+				if (CellState[pos.x + 1][pos.y + 1] == Cell::Bomb)
+					Count++;
+				if (CellState[pos.x][pos.y + 1] == Cell::Bomb)
+					Count++;
+			}
+
+			// bottom left corner
+			else if (pos.y == height - 1)
+			{
+				if (CellState[pos.x + 1][pos.y] == Cell::Bomb)
+					Count++;
+				if (CellState[pos.x + 1][pos.y - 1] == Cell::Bomb)
+					Count++;
+				if (CellState[pos.x][pos.y - 1] == Cell::Bomb)
+					Count++;
+			}
+
+			// left
+			else
+			{
+				if (CellState[pos.x][pos.y - 1] == Cell::Bomb)
+					Count++;
+				if (CellState[pos.x + 1][pos.y - 1] == Cell::Bomb)
+					Count++;
+				if (CellState[pos.x + 1][pos.y] == Cell::Bomb)
+					Count++;
+				if (CellState[pos.x + 1][pos.y + 1] == Cell::Bomb)
+					Count++;
+				if (CellState[pos.x][pos.y + 1] == Cell::Bomb)
+					Count++;
+			}
+		}
+
+		else if (pos.x == width - 1)
+		{
+			// top right corner
+			if (pos.y == 0)
+			{
+				if (CellState[pos.x - 1][pos.y] == Cell::Bomb)
+					Count++;
+				if (CellState[pos.x - 1][pos.y - 1] == Cell::Bomb)
+					Count++;
+				if (CellState[pos.x][pos.y - 1] == Cell::Bomb)
+					Count++;
+			}
+
+			// bottom right corner
+			else if (pos.y == height - 1)
+			{
+				if (CellState[pos.x - 1][pos.y] == Cell::Bomb)
+					Count++;
+				if (CellState[pos.x - 1][pos.y - 1] == Cell::Bomb)
+					Count++;
+				if (CellState[pos.x][pos.y - 1] == Cell::Bomb)
+					Count++;
+			}
+
+			// right
+			else 
+			{
+				if (CellState[pos.x][pos.y - 1] == Cell::Bomb)
+					Count++;
+				if (CellState[pos.x - 1][pos.y - 1] == Cell::Bomb)
+					Count++;
+				if (CellState[pos.x - 1][pos.y] == Cell::Bomb)
+					Count++;
+				if (CellState[pos.x - 1][pos.y - 1] == Cell::Bomb)
+					Count++;
+				if (CellState[pos.x][pos.y - 1] == Cell::Bomb)
+					Count++;
+			}
+		}
+
+		// top
+		else if (pos.y == 0)
+		{
+			if (CellState[pos.x - 1][pos.y] == Cell::Bomb)
+				Count++;
+			if (CellState[pos.x - 1][pos.y + 1] == Cell::Bomb)
+				Count++;
+			if (CellState[pos.x][pos.y + 1] == Cell::Bomb)
+				Count++;
+			if (CellState[pos.x + 1][pos.y + 1] == Cell::Bomb)
+				Count++;
+			if (CellState[pos.x + 1][pos.y] == Cell::Bomb)
+				Count++;
+		}
+
+		// bottom
+		else if (pos.y == height - 1)
+		{
+			if (CellState[pos.x - 1][pos.y] == Cell::Bomb)
+				Count++;
+			if (CellState[pos.x - 1][pos.y - 1] == Cell::Bomb)
+				Count++;
+			if (CellState[pos.x][pos.y - 1] == Cell::Bomb)
+				Count++;
+			if (CellState[pos.x + 1][pos.y - 1] == Cell::Bomb)
+				Count++;
+			if (CellState[pos.x + 1][pos.y] == Cell::Bomb)
+				Count++;
+		}
+	}
 
 	return Count;
 }
 
 void Board::InitCells()
 {
-	for (int y = 0; y < height; y++)
-		for (int x = 0; x < width; x++)
+	for (int y = 0; y < height - 1; y++)
+		for (int x = 0; x < width - 1; x++)
 		{
 			if (x % 2 == 0 && y % 2 == 0)
 				CellState[x][y] = Cell::Bomb;
 		}
+	//CellState[width-1][height-1] = Cell::Bomb;
 }
 
 bool Board::isGameOver()
